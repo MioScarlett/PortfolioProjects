@@ -4,12 +4,12 @@ select *
 from Housing.dbo.NashvilleHousing;
 
 
--- Standardize Data Format
+---- Standardize Data Format
 
 alter table Housing.dbo.NashvilleHousing
 alter column SaleDate date;
 
-/**-- Populate Property Address data **/
+---- Populate Property Address data 
 
 select *
 from Housing.dbo.NashvilleHousing
@@ -35,9 +35,7 @@ AND a.[UniqueID ]<> b.[UniqueID ]
 where a.PropertyAddress is null;
 
 
--- Breaking out address into individual columns (Address, City, State)
----SUBSTRING(string,startposition, length)
----CHARINDEX('t', 'Customer') >>return position: 4
+---- Breaking out address into individual columns (Address, City, State)
 
 select 
 SUBSTRING(PropertyAddress,1,CHARINDEX(',',PropertyAddress)-1) as Address,
@@ -83,8 +81,7 @@ OwnerSplitAddress = PARSENAME(REPLACE(OwnerAddress,',','.'),3)
 ,OwnerSplitState = PARSENAME(REPLACE(OwnerAddress,',','.'),1);
 
 
-
--- Change Y and N to Yes and No in 'Sold as vacant' column
+---- Change Y and N to Yes and No in 'Sold as vacant' column
 
 select DISTINCT(SoldAsVacant), count(SoldAsVacant)
 from Housing.dbo.NashvilleHousing
@@ -106,11 +103,7 @@ set SoldAsVacant = case when SoldAsVacant = 'Y' then 'Yes'
 		else SoldAsVacant
 		end
 
-
-
-
-
--- Remove duplicates
+---- Remove duplicates
 
 With RowNumCTE AS(
 	Select *,
